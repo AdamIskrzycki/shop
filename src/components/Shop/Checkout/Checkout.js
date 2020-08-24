@@ -1,11 +1,9 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { CssBaseline, Paper, Stepper, Step, StepLabel, Button, Typography } from '@material-ui/core';
-import AddressForm from "./AddressForm";
-import PaymentForm from "./PaymentForm";
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { CssBaseline, Paper, Button, Typography } from '@material-ui/core';
 import Review from "./Review";
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   layout: {
     width: "auto",
     marginLeft: theme.spacing(2),
@@ -26,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(3),
     },
   },
-  stepper: {
-    padding: theme.spacing(3, 0, 5),
+  title: {
+    marginBottom: "40px"
   },
   buttons: {
     marginTop: "20px",
@@ -38,79 +36,58 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
-}));
+});
 
-const steps = ["Shipping address", "Payment details", "Review your order"];
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    case 1:
-      return <PaymentForm />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error("Unknown step");
+class Checkout extends Component {
+
+  state = {
+    isBuying: false
+  }
+
+  handleBuying = () => {
+    this.setState({ isBuying: true });
+  }
+
+  render() {
+
+    const { classes } = this.props;
+
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography component="h1" variant="h4" align="center" className={classes.title}>
+              Checkout
+          </Typography>
+            <React.Fragment>
+              {this.state.isBuying ? (
+                <React.Fragment>
+                  <Typography variant="h5" gutterBottom>
+                    Thank you for your order.
+                </Typography>
+                  <Typography variant="subtitle1">
+                    Your order is being processed and will be shipped to you in 2-5 days, for more information please
+                    contact us on onlineshop@gmail.com.
+                </Typography>
+                </React.Fragment>
+              ) : (
+                  <React.Fragment>
+                    <Review />
+                    <div className={classes.buttons}>
+                      <Button variant="contained" color="primary" onClick={this.handleBuying} className={classes.button}>
+                        Place order
+                  </Button>
+                    </div>
+                  </React.Fragment>
+                )}
+            </React.Fragment>
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
   }
 }
 
-export default function Checkout() {
-  const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
-
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep(activeStep - 1);
-  };
-
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography component="h1" variant="h4" align="center">
-            Checkout
-          </Typography>
-          <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Thank you for your order.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Your order is being processed and will be shipped to you in 2-5 days, for more information please
-                  contact us on onlineshop@gmail.com.
-                </Typography>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
-                    </Button>
-                  )}
-                  <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
-                    {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                  </Button>
-                </div>
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        </Paper>
-      </main>
-    </React.Fragment>
-  );
-}
+export default withStyles(styles)(Checkout);
