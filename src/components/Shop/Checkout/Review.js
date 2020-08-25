@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
   total: {
     fontWeight: 700,
+    fontSize: '25px'
   },
   title: {
     marginTop: theme.spacing(2),
@@ -41,8 +42,8 @@ const Review = (props) => {
           </ListItem>
         ))}
         <ListItem className={classes.listItem}>
-          <ListItemText primary="Total Price" />
-          <Typography variant="subtitle1" className={classes.total}>
+          <ListItemText primary="Total Price"/>
+          <Typography className={classes.total}>
             {'$' + totalPrice}
           </Typography>
         </ListItem>

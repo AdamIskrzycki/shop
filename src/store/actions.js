@@ -87,6 +87,7 @@ export const auth = (email, password, isSignedUp) => {
   };
 };
 
+
 export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem("token");

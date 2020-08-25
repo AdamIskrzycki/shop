@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import { Link, withRouter } from "react-router-dom";
 import Container from "@material-ui/core/Container";
+import { connect } from 'react-redux'; 
 
 const styles = (theme) => ({
   heroContent: {
@@ -27,7 +28,7 @@ class Main extends Component {
           </Typography>
           <Typography variant="h5" align="center" color="textSecondary" paragraph>
             Click the buttons below to determine whether you would like to start shopping or manipulate the products in
-            the shop via the admin panel.
+            the shop via the admin panel (requires admin account access).
           </Typography>
           <div className={classes.heroButtons}>
             <Grid container spacing={2} justify="center">
@@ -37,7 +38,7 @@ class Main extends Component {
                 </Button>
               </Grid>
               <Grid item>
-                <Button variant="outlined" color="primary" component={Link} to={"/admin"}>
+                <Button variant="outlined" color="primary" component={Link} to={"/admin"} disabled={this.props.uid !== 'OK1zpZgUcdbfqdA964UDu78BIcq2'}>
                   Admin Panel
                 </Button>
               </Grid>
@@ -49,4 +50,11 @@ class Main extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Main));
+const mapStateToProps = (state) => {
+  return {
+    uid: state.userId,
+  };
+};
+
+
+export default connect(mapStateToProps)(withRouter(withStyles(styles)(Main)));

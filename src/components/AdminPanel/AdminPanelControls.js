@@ -169,7 +169,7 @@ class AdminPanelControls extends Component {
           <Box className={classes.box}>
             <Typography variant="h6" color="textSecondary" className={classes.fileInput}>
               <label for="imageUpload" className={classes.inputLabel}>
-                Upload Product Image
+                Upload product image
               </label>
               <input id="imageUpload" type="file" onChange={this.handleImageAsFile} accept=".jpg, .jpeg, .png"></input>
             </Typography>

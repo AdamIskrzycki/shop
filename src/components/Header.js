@@ -1,13 +1,14 @@
-import React from "react";
+import React, { Component } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import { Link } from "react-router-dom";
 import { Button, Typography } from "@material-ui/core";
 import Auth from './Auth';
+import { connect } from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   button: {
     marginLeft: "10px",
     borderLeft: "1px dotted white",
@@ -16,10 +17,11 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
   },
-}));
+});
 
-export default function Header(props) {
-  const classes = useStyles();
+class Header extends Component  {
+  render() {
+  const { classes } = this.props
 
   return (
     <AppBar position="relative">
@@ -34,7 +36,7 @@ export default function Header(props) {
         <Button className={classes.button} variant="text" color="inherit" component={Link} to={"/shop"}>
           Shop
         </Button>
-        <Button className={classes.button} variant="text" color="inherit" component={Link} to={"/admin"}>
+        <Button className={classes.button} variant="text" color="inherit" component={Link} to={"/admin"} disabled={this.props.uid !== 'OK1zpZgUcdbfqdA964UDu78BIcq2'}>
           Admin Panel
         </Button>
         <Auth />
@@ -42,3 +44,14 @@ export default function Header(props) {
     </AppBar>
   );
 }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    uid: state.userId,
+  };
+};
+
+export default connect(mapStateToProps)(withStyles(styles)(Header));
+
+
